@@ -39,7 +39,7 @@ import re
 from collections import deque
 
 default_log_handler = logging.StreamHandler(sys.stdout)
-__logger = logging.getLogger("zabbix_api")
+__logger = logging.getLogger("zabbix.rpc")
 __logger.addHandler(default_log_handler)
 __logger.log(10, "Starting logging")
 
@@ -81,7 +81,7 @@ def dojson2(fn):
     return wrapper
 
 
-class ZabbixAPIException(Exception):
+class ZabbixRPCException(Exception):
     """ generic zabbix api exception
     code list:
          -32602 - Invalid params (eg already exists)
@@ -90,16 +90,16 @@ class ZabbixAPIException(Exception):
     pass
 
 
-class Already_Exists(ZabbixAPIException):
+class Already_Exists(ZabbixRPCException):
     pass
 
 
-class InvalidProtoError(ZabbixAPIException):
+class InvalidProtoError(ZabbixRPCException):
     """ Recived an invalid proto """
     pass
 
 
-class ZabbixAPI(object):
+class ZabbixRPC(object):
     __username__ = ''
     __password__ = ''
 
@@ -149,52 +149,52 @@ class ZabbixAPI(object):
         self.httpuser = user
         self.httppasswd = passwd
         self.timeout = timeout
-        self.usergroup = ZabbixAPISubClass(self, dict({"prefix": "usergroup"}, **kwargs))
-        self.user = ZabbixAPISubClass(self, dict({"prefix": "user"}, **kwargs))
-        self.host = ZabbixAPISubClass(self, dict({"prefix": "host"}, **kwargs))
-        self.item = ZabbixAPISubClass(self, dict({"prefix": "item"}, **kwargs))
-        self.hostgroup = ZabbixAPISubClass(self, dict({"prefix": "hostgroup"}, **kwargs))
-        self.hostinterface = ZabbixAPISubClass(self, dict({"prefix": "hostinterface"}, **kwargs))
-        self.application = ZabbixAPISubClass(self, dict({"prefix": "application"}, **kwargs))
-        self.trigger = ZabbixAPISubClass(self, dict({"prefix": "trigger"}, **kwargs))
-        self.template = ZabbixAPISubClass(self, dict({"prefix": "template"}, **kwargs))
-        self.action = ZabbixAPISubClass(self, dict({"prefix": "action"}, **kwargs))
-        self.alert = ZabbixAPISubClass(self, dict({"prefix": "alert"}, **kwargs))
-        self.info = ZabbixAPISubClass(self, dict({"prefix": "info"}, **kwargs))
-        self.event = ZabbixAPISubClass(self, dict({"prefix": "event"}, **kwargs))
-        self.graph = ZabbixAPISubClass(self, dict({"prefix": "graph"}, **kwargs))
-        self.graphitem = ZabbixAPISubClass(self, dict({"prefix": "graphitem"}, **kwargs))
-        self.map = ZabbixAPISubClass(self, dict({"prefix": "map"}, **kwargs))
-        self.screen = ZabbixAPISubClass(self, dict({"prefix": "screen"}, **kwargs))
-        self.script = ZabbixAPISubClass(self, dict({"prefix": "script"}, **kwargs))
-        self.usermacro = ZabbixAPISubClass(self, dict({"prefix": "usermacro"}, **kwargs))
-        self.drule = ZabbixAPISubClass(self, dict({"prefix": "drule"}, **kwargs))
-        self.history = ZabbixAPISubClass(self, dict({"prefix": "history"}, **kwargs))
-        self.maintenance = ZabbixAPISubClass(self, dict({"prefix": "maintenance"}, **kwargs))
-        self.proxy = ZabbixAPISubClass(self, dict({"prefix": "proxy"}, **kwargs))
-        self.apiinfo = ZabbixAPISubClass(self, dict({"prefix": "apiinfo"}, **kwargs))
-        self.configuration = ZabbixAPISubClass(self, dict({"prefix": "configuration"}, **kwargs))
-        self.dcheck = ZabbixAPISubClass(self, dict({"prefix": "dcheck"}, **kwargs))
-        self.dhost = ZabbixAPISubClass(self, dict({"prefix": "dhost"}, **kwargs))
-        self.discoveryrule = ZabbixAPISubClass(self, dict({"prefix": "discoveryrule"}, **kwargs))
-        self.dservice = ZabbixAPISubClass(self, dict({"prefix": "dservice"}, **kwargs))
-        self.iconmap = ZabbixAPISubClass(self, dict({"prefix": "iconmap"}, **kwargs))
-        self.image = ZabbixAPISubClass(self, dict({"prefix": "image"}, **kwargs))
-        self.mediatype = ZabbixAPISubClass(self, dict({"prefix": "mediatype"}, **kwargs))
-        self.service = ZabbixAPISubClass(self, dict({"prefix": "service"}, **kwargs))
-        self.templatescreen = ZabbixAPISubClass(self, dict({"prefix": "templatescreen"}, **kwargs))
-        self.usermedia = ZabbixAPISubClass(self, dict({"prefix": "usermedia"}, **kwargs))
-        self.hostinterface = ZabbixAPISubClass(self, dict({"prefix": "hostinterface"}, **kwargs))
-        self.triggerprototype = ZabbixAPISubClass(self, dict({"prefix": "triggerprototype"}, **kwargs))
-        self.graphprototype = ZabbixAPISubClass(self, dict({"prefix": "graphprototype"}, **kwargs))
-        self.itemprototype = ZabbixAPISubClass(self, dict({"prefix": "itemprototype"}, **kwargs))
-        self.webcheck = ZabbixAPISubClass(self, dict({"prefix": "webcheck"}, **kwargs))
+        self.usergroup = ZabbixRPCSubClass(self, dict({"prefix": "usergroup"}, **kwargs))
+        self.user = ZabbixRPCSubClass(self, dict({"prefix": "user"}, **kwargs))
+        self.host = ZabbixRPCSubClass(self, dict({"prefix": "host"}, **kwargs))
+        self.item = ZabbixRPCSubClass(self, dict({"prefix": "item"}, **kwargs))
+        self.hostgroup = ZabbixRPCSubClass(self, dict({"prefix": "hostgroup"}, **kwargs))
+        self.hostinterface = ZabbixRPCSubClass(self, dict({"prefix": "hostinterface"}, **kwargs))
+        self.application = ZabbixRPCSubClass(self, dict({"prefix": "application"}, **kwargs))
+        self.trigger = ZabbixRPCSubClass(self, dict({"prefix": "trigger"}, **kwargs))
+        self.template = ZabbixRPCSubClass(self, dict({"prefix": "template"}, **kwargs))
+        self.action = ZabbixRPCSubClass(self, dict({"prefix": "action"}, **kwargs))
+        self.alert = ZabbixRPCSubClass(self, dict({"prefix": "alert"}, **kwargs))
+        self.info = ZabbixRPCSubClass(self, dict({"prefix": "info"}, **kwargs))
+        self.event = ZabbixRPCSubClass(self, dict({"prefix": "event"}, **kwargs))
+        self.graph = ZabbixRPCSubClass(self, dict({"prefix": "graph"}, **kwargs))
+        self.graphitem = ZabbixRPCSubClass(self, dict({"prefix": "graphitem"}, **kwargs))
+        self.map = ZabbixRPCSubClass(self, dict({"prefix": "map"}, **kwargs))
+        self.screen = ZabbixRPCSubClass(self, dict({"prefix": "screen"}, **kwargs))
+        self.script = ZabbixRPCSubClass(self, dict({"prefix": "script"}, **kwargs))
+        self.usermacro = ZabbixRPCSubClass(self, dict({"prefix": "usermacro"}, **kwargs))
+        self.drule = ZabbixRPCSubClass(self, dict({"prefix": "drule"}, **kwargs))
+        self.history = ZabbixRPCSubClass(self, dict({"prefix": "history"}, **kwargs))
+        self.maintenance = ZabbixRPCSubClass(self, dict({"prefix": "maintenance"}, **kwargs))
+        self.proxy = ZabbixRPCSubClass(self, dict({"prefix": "proxy"}, **kwargs))
+        self.apiinfo = ZabbixRPCSubClass(self, dict({"prefix": "apiinfo"}, **kwargs))
+        self.configuration = ZabbixRPCSubClass(self, dict({"prefix": "configuration"}, **kwargs))
+        self.dcheck = ZabbixRPCSubClass(self, dict({"prefix": "dcheck"}, **kwargs))
+        self.dhost = ZabbixRPCSubClass(self, dict({"prefix": "dhost"}, **kwargs))
+        self.discoveryrule = ZabbixRPCSubClass(self, dict({"prefix": "discoveryrule"}, **kwargs))
+        self.dservice = ZabbixRPCSubClass(self, dict({"prefix": "dservice"}, **kwargs))
+        self.iconmap = ZabbixRPCSubClass(self, dict({"prefix": "iconmap"}, **kwargs))
+        self.image = ZabbixRPCSubClass(self, dict({"prefix": "image"}, **kwargs))
+        self.mediatype = ZabbixRPCSubClass(self, dict({"prefix": "mediatype"}, **kwargs))
+        self.service = ZabbixRPCSubClass(self, dict({"prefix": "service"}, **kwargs))
+        self.templatescreen = ZabbixRPCSubClass(self, dict({"prefix": "templatescreen"}, **kwargs))
+        self.usermedia = ZabbixRPCSubClass(self, dict({"prefix": "usermedia"}, **kwargs))
+        self.hostinterface = ZabbixRPCSubClass(self, dict({"prefix": "hostinterface"}, **kwargs))
+        self.triggerprototype = ZabbixRPCSubClass(self, dict({"prefix": "triggerprototype"}, **kwargs))
+        self.graphprototype = ZabbixRPCSubClass(self, dict({"prefix": "graphprototype"}, **kwargs))
+        self.itemprototype = ZabbixRPCSubClass(self, dict({"prefix": "itemprototype"}, **kwargs))
+        self.webcheck = ZabbixRPCSubClass(self, dict({"prefix": "webcheck"}, **kwargs))
         self.id = 0
         self.r_query = deque([], maxlen=r_query_len)
         self.debug(logging.INFO, "url: " + self.url)
 
     def _setuplogging(self):
-        self.logger = logging.getLogger("zabbix_api.%s" % self.__class__.__name__)
+        self.logger = logging.getLogger("zabbix.rpc.%s" % self.__class__.__name__)
 
     def set_log_level(self, level):
         self.debug(logging.INFO, "Set logging level to %d" % level)
@@ -239,7 +239,7 @@ class ZabbixAPI(object):
             l_user = self.__username__
             l_password = self.__password__
         else:
-            raise ZabbixAPIException("No authentication information available.")
+            raise ZabbixRPCException("No authentication information available.")
 
         # don't print the raw password.
         hashed_pw_string = "md5(" + hashlib.md5(l_password.encode('utf-8')).hexdigest() + ")"
@@ -264,7 +264,7 @@ class ZabbixAPI(object):
 
     def do_request(self, json_obj):
         headers = {'Content-Type': 'application/json-rpc',
-                   'User-Agent': 'python/zabbix_api'}
+                   'User-Agent': 'python/zabbix'}
 
         if self.httpuser:
             self.debug(logging.INFO, "HTTP Auth enabled")
@@ -282,23 +282,23 @@ class ZabbixAPI(object):
             http_handler = urllib2.HTTPHandler(debuglevel=0)
             opener = urllib2.build_opener(http_handler)
         else:
-            raise ZabbixAPIException("Unknow protocol %s" % self.proto)
+            raise ZabbixRPCException("Unknow protocol %s" % self.proto)
 
         urllib2.install_opener(opener)
         try:
             response = opener.open(request, timeout=self.timeout)
         except Exception as e:
-            raise ZabbixAPIException("Site needs HTTP authentication. Error: "+str(e))
+            raise ZabbixRPCException("Site needs HTTP authentication. Error: "+str(e))
         self.debug(logging.INFO, "Response Code: " + str(response.code))
 
         # NOTE: Getting a 412 response code means the headers are not in the
         # list of allowed headers.
         if response.code != 200:
-            raise ZabbixAPIException("HTTP ERROR %s: %s"
+            raise ZabbixRPCException("HTTP ERROR %s: %s"
                     % (response.status, response.reason))
         reads = response.read()
         if len(reads) == 0:
-            raise ZabbixAPIException("Received zero answer")
+            raise ZabbixRPCException("Received zero answer")
         try:
             jobj = json.loads(reads.decode('utf-8'))
         except ValueError as msg:
@@ -314,7 +314,7 @@ class ZabbixAPI(object):
             if re.search(".*already\sexists.*", jobj["error"]["data"], re.I):  # already exists
                 raise Already_Exists(msg, jobj['error']['code'])
             else:
-                raise ZabbixAPIException(msg, jobj['error']['code'])
+                raise ZabbixRPCException(msg, jobj['error']['code'])
         return jobj
 
     def logged_in(self):
@@ -329,10 +329,10 @@ class ZabbixAPI(object):
 
     def __checkauth__(self):
         if not self.logged_in():
-            raise ZabbixAPIException("Not logged in.")
+            raise ZabbixRPCException("Not logged in.")
 
 
-class ZabbixAPISubClass(ZabbixAPI):
+class ZabbixRPCSubClass(ZabbixRPC):
     """ wrapper class to ensure all calls go through the parent object """
     parent = None
     data = None

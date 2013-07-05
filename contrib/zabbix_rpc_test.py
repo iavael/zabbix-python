@@ -3,7 +3,7 @@ import optparse
 import sys
 import traceback
 from getpass import getpass
-from zabbix_api import ZabbixAPI, ZabbixAPIException
+from zabbix.rpc import ZabbixRPC, ZabbixRPCException
 
 def get_options():
     """ command-line options """
@@ -48,13 +48,13 @@ def errmsg(msg):
 if  __name__ == "__main__":
     options, args = get_options()
 
-    zapi = ZabbixAPI(server=options.server,log_level=3)
+    zapi = ZabbixRPC(server=options.server,log_level=3)
 
     try:
         zapi.login(options.username, options.password)
         print "Zabbix API Version: %s" % zapi.api_version()
         print "Logged in: %s" % str(zapi.test_login())
-    except ZabbixAPIException, e:
+    except ZabbixRPCException, e:
         sys.stderr.write(str(e) + '\n')
 
     try:
@@ -70,5 +70,5 @@ if  __name__ == "__main__":
                 newhost['useip'] = 0
                 zapi.host.update(newhost)
 
-    except ZabbixAPIException, e:
+    except ZabbixRPCException, e:
         sys.stderr.write(str(e) + '\n')

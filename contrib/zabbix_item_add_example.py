@@ -3,7 +3,7 @@ Created on 01.10.2010
 
 @author: gescheit
 '''
-from zabbix_api import ZabbixAPI
+from zabbix.rpc import ZabbixRPC
 
 server="http://127.0.0.1"
 username="api"
